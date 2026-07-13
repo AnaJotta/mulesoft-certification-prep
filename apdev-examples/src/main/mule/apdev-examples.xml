@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	</http:listener-config>
 	<flow name="helloFlow" doc:id="d27cd4ff-d058-4291-8dc2-1a743e9a46cf" >
 		<http:listener doc:name="Listener" doc:id="d0d9d8f6-3353-49bc-9cf8-1b1367655c58" config-ref="HTTP_Listener_config" path="/hello">
-			<ee:repeatable-file-store-stream inMemorySize="1024" />
+			<repeatable-in-memory-stream />
 		</http:listener>
 		<set-payload value="Hello" doc:name="Hello" doc:id="c13a2038-e222-4fb7-a3d8-ba463c10ade5" />
 		<logger level="INFO" doc:name="Logger" doc:id="7c7818a1-5277-44f3-a506-7a09d02f16cc" />

@@ -1,24 +1,104 @@
 # MuleSoft Certification Prep
 
-Repositorio con el proyecto del curso DEX401 de MULESOFT para preparar la certificación **MuleSoft Certified Developer - Level 1 (Mule 4)**.
+Repositorio con el proyecto del curso DEX401 de MuleSoft para preparar la certificación **MuleSoft Certified Developer - Level 1 (Mule 4)**.
 
 ## Sobre mí
 
-Técnico Superior en DAM, con prácticas en NTT DATA en el área de Arquitectura de Integración. Documento aquí mi proceso de preparación para la certificación
+Técnico Superior en DAM, con prácticas en NTT DATA en el área de Arquitectura de Integración. Documento aquí mi proceso de preparación para la certificación.
 
 ### [dex401-course-project](./dex401-course-project)
+
 Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401)**, desarrollado módulo a módulo. El progreso se documenta a través de los commits del proyecto.
+
+## Progreso general
 
 | Módulo | Estado |
 |---|---|
-| 1 — Acceso y modificación de eventos Mule | 🔄 En progreso |
-| 2 — Estructuración de aplicaciones Mule | ⏳ Pendiente |
-| 3 — Consumo de web services | ⏳ Pendiente |
-| 4 — Control de flujo de eventos | ⏳ Pendiente |
-| 5 — Manejo de errores | ⏳ Pendiente |
-| 6 — Transformaciones DataWeave | ⏳ Pendiente |
-| 7 — Disparadores de flows (file, DB, scheduler, JMS) | ⏳ Pendiente |
-| 8 — Procesamiento de registros (For Each / Batch Job) | ⏳ Pendiente |
+| [1 — Acceso y modificación de eventos Mule](#módulo-1--acceso-y-modificación-de-eventos-mule) | 🔄 En progreso |
+| [2 — Estructuración de aplicaciones Mule](#módulo-2--estructuración-de-aplicaciones-mule) | ⏳ Pendiente |
+| [3 — Consumo de web services](#módulo-3--consumo-de-web-services) | ⏳ Pendiente |
+| [4 — Control de flujo de eventos](#módulo-4--control-de-flujo-de-eventos) | ⏳ Pendiente |
+| [5 — Manejo de errores](#módulo-5--manejo-de-errores) | ⏳ Pendiente |
+| [6 — Transformaciones DataWeave](#módulo-6--transformaciones-dataweave) | ⏳ Pendiente |
+| [7 — Disparadores de flows](#módulo-7--disparadores-de-flows) | ⏳ Pendiente |
+| [8 — Procesamiento de registros](#módulo-8--procesamiento-de-registros) | ⏳ Pendiente |
+
+---
+
+## Módulo 1 — Acceso y modificación de eventos Mule
+
+- [x] **1-1** Visualizar datos del evento (HTTP Listener, DataSense Explorer, Logger, query parameters)
+- [ ] **1-2** Depurar una aplicación Mule con el debugger
+- [ ] **1-3** Rastrear datos del evento al entrar y salir de una aplicación Mule
+- [ ] **1-4** Configurar datos de request y response
+- [ ] **1-5** Obtener y modificar datos del evento con expresiones DataWeave
+- [ ] **1-6** Definir y usar variables
+
+<details>
+<summary>Notas de aprendizaje</summary>
+
+**Walkthrough 1-1:** creado el proyecto `apdev-examples` con un HTTP Listener (`GET /hello`), un Set Payload y un Logger. Practicada la diferencia entre **query parameters** (`attributes.queryParams`, van tras el `?` en la URL) y **URI parameters** (`attributes.uriParams`, parámetros dinámicos dentro de la propia ruta). Usado el DataSense Explorer para inspeccionar payload/attributes en cada componente del flow.
+
+</details>
+
+## Módulo 2 — Estructuración de aplicaciones Mule
+
+- [ ] **2-1** Crear y referenciar subflows y private flows
+- [ ] **2-2** Disparar flows usando el conector VM
+- [ ] **2-3** Encapsular elementos globales en un archivo de configuración separado
+- [ ] **2-4** Usar property placeholders en conectores
+- [ ] **2-5** Crear un proyecto Mule bien organizado
+- [ ] **2-6** Gestionar metadata de un proyecto
+
+## Módulo 3 — Consumo de web services
+
+- [ ] **3-1** Consumir un servicio RESTful que tiene API y conector propio
+- [ ] **3-2** Consumir un servicio RESTful
+- [ ] **3-3** Consumir un servicio SOAP
+- [ ] **3-4** Transformar datos de múltiples servicios a un formato canónico
+
+## Módulo 4 — Control de flujo de eventos
+
+- [ ] **4-1** Multicast de un evento
+- [ ] **4-2** Enrutar eventos según condiciones
+- [ ] **4-3** Validar eventos
+
+## Módulo 5 — Manejo de errores
+
+- [ ] **5-1** Explorar el manejo de errores por defecto
+- [ ] **5-2** Manejar errores a nivel de aplicación
+- [ ] **5-3** Manejar tipos de error específicos
+- [ ] **5-4** Manejar errores a nivel de flow
+- [ ] **5-5** Manejar errores a nivel de processor
+- [ ] **5-6** Mapear un error a un tipo de error personalizado
+- [ ] **5-7** Integrar con los manejadores de error de APIkit
+- [ ] **5-8** Configurar una estrategia de reconexión para un conector
+
+## Módulo 6 — Transformaciones DataWeave
+
+- [ ] **6-1** Crear transformaciones con el componente Transform Message
+- [ ] **6-2** Transformar estructuras básicas de JSON, Java y XML
+- [ ] **6-3** Transformar estructuras de datos complejas con arrays
+- [ ] **6-4** Transformar hacia/desde XML con elementos repetidos
+- [ ] **6-5** Definir y usar variables y funciones
+- [ ] **6-6** Convertir y dar formato a strings, números y fechas
+- [ ] **6-7** Definir y usar tipos de datos personalizados
+- [ ] **6-8** Usar funciones de DataWeave
+
+## Módulo 7 — Disparadores de flows
+
+- [ ] **7-1** Disparar un flow al añadirse un nuevo archivo a un directorio
+- [ ] **7-2** Disparar un flow al añadirse un registro en base de datos (watermarking)
+- [ ] **7-3** Programar un flow y usar watermarking manual
+- [ ] **7-4** Publicar y escuchar mensajes JMS
+
+## Módulo 8 — Procesamiento de registros
+
+- [ ] **8-1** Procesar elementos de una colección con el scope For Each
+- [ ] **8-2** Procesar registros con el scope Batch Job (opcional)
+- [ ] **8-3** Usar filtrado y agregación en un batch step (opcional)
+
+---
 
 ## Stack
 
@@ -26,4 +106,4 @@ MuleSoft Anypoint Platform · RAML · DataWeave 2.0 · APIkit · Postman
 
 ## Certificación objetivo
 
-MuleSoft Certified Developer - Level 1 (Mule 4) examen previsto para agosto 2026.
+MuleSoft Certified Developer - Level 1 (Mule 4) — examen previsto para agosto 2026.

@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="apdev-examplesFlow" doc:id="d27cd4ff-d058-4291-8dc2-1a743e9a46cf" >
-		<http:listener doc:name="Listener" doc:id="d0d9d8f6-3353-49bc-9cf8-1b1367655c58" />
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0ce0398b-ebfd-4ee4-b33b-aebb4bf6bf21" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="helloFlow" doc:id="d27cd4ff-d058-4291-8dc2-1a743e9a46cf" >
+		<http:listener doc:name="Listener" doc:id="d0d9d8f6-3353-49bc-9cf8-1b1367655c58" config-ref="HTTP_Listener_config" path="/hello">
+			<ee:repeatable-file-store-stream inMemorySize="1024" />
+		</http:listener>
+		<set-payload value="Hello" doc:name="Hello" doc:id="c13a2038-e222-4fb7-a3d8-ba463c10ade5" />
+		<logger level="INFO" doc:name="Logger" doc:id="7c7818a1-5277-44f3-a506-7a09d02f16cc" />
 	</flow>
 </mule>

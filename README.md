@@ -28,7 +28,7 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 ## Módulo 1 — Acceso y modificación de eventos Mule
 
 - [x] **1-1** Visualizar datos del evento (HTTP Listener, DataSense Explorer, Logger, query parameters)
-- [ ] **1-2** Depurar una aplicación Mule con el debugger
+- [x] **1-2** Depurar una aplicación Mule con el debugger
 - [ ] **1-3** Rastrear datos del evento al entrar y salir de una aplicación Mule
 - [ ] **1-4** Configurar datos de request y response
 - [ ] **1-5** Obtener y modificar datos del evento con expresiones DataWeave
@@ -38,6 +38,8 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 <summary>Notas de aprendizaje</summary>
 
 **Walkthrough 1-1:** creado el proyecto `apdev-examples` con un HTTP Listener (`GET /hello`), un Set Payload y un Logger. Practicada la diferencia entre **query parameters** (`attributes.queryParams`, van tras el `?` en la URL) y **URI parameters** (`attributes.uriParams`, parámetros dinámicos dentro de la propia ruta). Usado el DataSense Explorer para inspeccionar payload/attributes en cada componente del flow.
+
+**Walkthrough 1-2:** practicado el uso del Mule Debugger sobre `apdev-examples` — breakpoints en componentes (Set Payload, Logger), avance paso a paso con "Next processor" e inspección de `payload`/`attributes`/`queryParams` en cada punto del flow. Provocado intencionadamente un timeout de petición HTTP dejando el debugger pausado sin resumir, y configurado el timeout de Postman (Settings > General > Request timeout in ms) para controlar cuánto tiempo espera el cliente antes de fallar. Aprendida la diferencia entre "Resume" (continúa hasta el siguiente breakpoint o el final) y "Next processor" (avanza componente a componente).
 
 </details>
 

@@ -29,7 +29,7 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 
 - [x] **1-1** Visualizar datos del evento (HTTP Listener, DataSense Explorer, Logger, query parameters)
 - [x] **1-2** Depurar una aplicación Mule con el debugger
-- [ ] **1-3** Rastrear datos del evento al entrar y salir de una aplicación Mule
+- [x] **1-3** Rastrear datos del evento al entrar y salir de una aplicación Mule
 - [ ] **1-4** Configurar datos de request y response
 - [ ] **1-5** Obtener y modificar datos del evento con expresiones DataWeave
 - [ ] **1-6** Definir y usar variables

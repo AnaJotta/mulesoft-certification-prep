@@ -41,6 +41,16 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 
 **Walkthrough 1-2:** practicado el uso del Mule Debugger sobre `apdev-examples` — breakpoints en componentes (Set Payload, Logger), avance paso a paso con "Next processor" e inspección de `payload`/`attributes`/`queryParams` en cada punto del flow. Provocado intencionadamente un timeout de petición HTTP dejando el debugger pausado sin resumir, y configurado el timeout de Postman (Settings > General > Request timeout in ms) para controlar cuánto tiempo espera el cliente antes de fallar. Aprendida la diferencia entre "Resume" (continúa hasta el siguiente breakpoint o el final) y "Next processor" (avanza componente a componente).
 
+**Walkthrough 1-3:** practicado el rastreo de datos de eventos (Event Data Tracking) a medida que entran y salen de una aplicación Mule, simulando la llamada a un recurso externo mediante un segundo flujo en el mismo proyecto.
+* Creado un segundo flujo llamado `goodbyeFlow` con su propio HTTP Listener (GET /goodbye) que expone un endpoint local, un Set Payload ("Goodbye") y un Logger. Asegurado el uso de la misma configuración global existente (`HTTP_Listener_config`) compartiendo el puerto 8081.
+* Añadido un componente HTTP Request dentro de `helloFlow` (antes de su Logger original) configurado para invocar dinámicamente mediante GET el recurso `/goodbye` expuesto localmente en `localhost:8081`.
+* Configurado el "Response timeout" del HTTP Request de manera temporal a 300000 ms (300 segundos) en la pestaña Response, evitando que la petición sufra un timeout en el cliente emisor mientras se inspeccionan detenidamente los datos en el Mule Debugger.
+* Analizado el comportamiento del flujo de datos en tránsito con el Mule Debugger:
+  * Al llegar la petición original a `helloFlow`, el payload inicial y los queryParams (`fname=max&lname=mule`) se reciben correctamente.
+  * Al hacer "Step into" en el procesador HTTP Request, el evento cruza la barrera de transporte físico (transport boundary): los query parameters originales de la petición externa de Postman se pierden para el nuevo flujo receptor. El payload que entra a `goodbyeFlow` pasa a ser temporalmente el texto "Hello" (que era el payload de salida generado por el componente previo en `helloFlow`).
+  * Al retornar la respuesta del HTTP Request hacia `helloFlow`, los atributos del evento mutan por completo: la estructura cambia de `HttpRequestAttributes` (los metadatos de la petición entrante original de Postman) a `HttpResponseAttributes`, exponiendo metadatos específicos de la respuesta HTTP recibida (como `statusCode: 200` y `reasonPhrase`). El payload del flujo principal se sobrescribe con el resultado del servicio externo ("GOODBYE" / "Goodbye").
+* Confirmada la recepción final en Postman evaluando las cabeceras de respuesta devueltas por el Listener (Content-Type, Content-Length y Date).
+  
 </details>
 
 ## Módulo 2 — Estructuración de aplicaciones Mule

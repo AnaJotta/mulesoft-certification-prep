@@ -14,9 +14,22 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<flow name="helloFlow" doc:id="d27cd4ff-d058-4291-8dc2-1a743e9a46cf" >
 		<http:listener doc:name="Listener" doc:id="d0d9d8f6-3353-49bc-9cf8-1b1367655c58" config-ref="HTTP_Listener_config" path="/hello">
 			<repeatable-in-memory-stream />
+			<http:response reasonPhrase="Success ">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"name" : "Max"
+}]]]></http:headers>
+			</http:response>
 		</http:listener>
 		<set-payload value="Hello" doc:name="Hello" doc:id="c13a2038-e222-4fb7-a3d8-ba463c10ade5" />
-		<http:request doc:name="GET/goodbye" doc:id="ff3c8730-494d-41d9-8da5-76fdadd73fc3" config-ref="HTTP_Request_config" path="/goodbye" responseTimeout="300000"/>
+		<http:request doc:name="GET/goodbye" doc:id="ff3c8730-494d-41d9-8da5-76fdadd73fc3" config-ref="HTTP_Request_config" path="/goodbye" responseTimeout="300000">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"fullName" : "Max Mule"
+}]]]></http:query-params>
+		</http:request>
 		<logger level="INFO" doc:name="Logger" doc:id="7c7818a1-5277-44f3-a506-7a09d02f16cc" />
 	</flow>
 	<flow name="goodbyeFlow" doc:id="0d6ce27c-bc36-4751-a190-3486f43f5006" >

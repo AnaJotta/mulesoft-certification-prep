@@ -30,7 +30,7 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 - [x] **1-1** Visualizar datos del evento (HTTP Listener, DataSense Explorer, Logger, query parameters)
 - [x] **1-2** Depurar una aplicación Mule con el debugger
 - [x] **1-3** Rastrear datos del evento al entrar y salir de una aplicación Mule
-- [ ] **1-4** Configurar datos de request y response
+- [x] **1-4** Configurar datos de request y response
 - [ ] **1-5** Obtener y modificar datos del evento con expresiones DataWeave
 - [ ] **1-6** Definir y usar variables
 
@@ -41,6 +41,24 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 
 **Walkthrough 1-2:** practicado el uso del Mule Debugger sobre `apdev-examples` — breakpoints en componentes (Set Payload, Logger), avance paso a paso con "Next processor" e inspección de `payload`/`attributes`/`queryParams` en cada punto del flow. Provocado intencionadamente un timeout de petición HTTP dejando el debugger pausado sin resumir, y configurado el timeout de Postman (Settings > General > Request timeout in ms) para controlar cuánto tiempo espera el cliente antes de fallar. Aprendida la diferencia entre "Resume" (continúa hasta el siguiente breakpoint o el final) y "Next processor" (avanza componente a componente).
 
+**Walkthrough 1-3:** practicado el rastreo de datos de eventos (Event Data Tracking) a medida que entran y salen de una aplicación Mule, simulando la llamada a un recurso externo mediante un segundo flujo en el mismo proyecto.
+* Creado un segundo flujo llamado `goodbyeFlow` con su propio HTTP Listener (GET /goodbye) que expone un endpoint local, un Set Payload ("Goodbye") y un Logger. Asegurado el uso de la misma configuración global existente (`HTTP_Listener_config`) compartiendo el puerto 8081.
+* Añadido un componente HTTP Request dentro de `helloFlow` (antes de su Logger original) configurado para invocar dinámicamente mediante GET el recurso `/goodbye` expuesto localmente en `localhost:8081`.
+* Configurado el "Response timeout" del HTTP Request de manera temporal a 300000 ms (300 segundos) en la pestaña Response, evitando que la petición sufra un timeout en el cliente emisor mientras se inspeccionan detenidamente los datos en el Mule Debugger.
+* Analizado el comportamiento del flujo de datos en tránsito con el Mule Debugger:
+  * Al llegar la petición original a `helloFlow`, el payload inicial y los queryParams (`fname=max&lname=mule`) se reciben correctamente.
+  * Al hacer "Step into" en el procesador HTTP Request, el evento cruza la barrera de transporte físico (transport boundary): los query parameters originales de la petición externa de Postman se pierden para el nuevo flujo receptor. El payload que entra a `goodbyeFlow` pasa a ser temporalmente el texto "Hello" (que era el payload de salida generado por el componente previo en `helloFlow`).
+  * Al retornar la respuesta del HTTP Request hacia `helloFlow`, los atributos del evento mutan por completo: la estructura cambia de `HttpRequestAttributes` (los metadatos de la petición entrante original de Postman) a `HttpResponseAttributes`, exponiendo metadatos específicos de la respuesta HTTP recibida (como `statusCode: 200` y `reasonPhrase`). El payload del flujo principal se sobrescribe con el resultado del servicio externo ("GOODBYE" / "Goodbye").
+* Confirmada la recepción final en Postman evaluando las cabeceras de respuesta devueltas por el Listener (Content-Type, Content-Length y Date).
+
+**Walkthrough 1-4:** practicada la configuración manual de datos de solicitud y respuesta (Request and Response Data Customization) en los componentes HTTP Listener e HTTP Request para alterar el flujo del evento Mule.
+* Inspeccionada la pestaña "Responses" en la configuración del HTTP Listener de `helloFlow` (`GET /hello`), comprendiendo que por defecto el "Body" de la respuesta devuelta al cliente está mapeado mediante la expresión DataWeave `#[payload]` (devolviendo el payload activo al final del flujo).
+* Configurada una cabecera de respuesta (Response Header) personalizada en el HTTP Listener: clave `"name"` con el valor literal `"Max"`, y establecido el "Reason phrase" a `"Success"` (manteniendo el "Status code" en blanco para que devuelva el código 200 por defecto). Validado el cambio en las cabeceras recibidas por el cliente en Advanced REST Client.
+* Inspeccionada la pestaña "Body" en la sección Request del componente HTTP Request (`GET /goodbye`), confirmando que por defecto Mule inyecta el `payload` activo del flujo como cuerpo de la petición saliente hacia el servicio externo.
+* Añadido un Query Parameter dinámico dentro de la pestaña "Query Parameters" del HTTP Request: clave `"fullName"` con el valor literal `"Max Mule"`. 
+* Utilizado el Mule Debugger para verificar la propagación del parámetro a través de la barrera de transporte: al hacer "Step into" hacia `goodbyeFlow`, se comprobó que los atributos del nuevo mensaje entrante (`HttpRequestAttributes`) ahora contienen con éxito el query parameter `fullName=Max Mule` inyectado por el Request del flujo padre.
+* Detenido el proyecto y regresado a la perspectiva "Mule Design" para limpiar el entorno de pruebas.
+  
 </details>
 
 ## Módulo 2 — Estructuración de aplicaciones Mule

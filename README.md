@@ -31,7 +31,7 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 - [x] **1-2** Depurar una aplicación Mule con el debugger
 - [x] **1-3** Rastrear datos del evento al entrar y salir de una aplicación Mule
 - [x] **1-4** Configurar datos de request y response
-- [ ] **1-5** Obtener y modificar datos del evento con expresiones DataWeave
+- [x] **1-5** Obtener y modificar datos del evento con expresiones DataWeave
 - [ ] **1-6** Definir y usar variables
 
 <details>
@@ -58,6 +58,17 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 * Añadido un Query Parameter dinámico dentro de la pestaña "Query Parameters" del HTTP Request: clave `"fullName"` con el valor literal `"Max Mule"`. 
 * Utilizado el Mule Debugger para verificar la propagación del parámetro a través de la barrera de transporte: al hacer "Step into" hacia `goodbyeFlow`, se comprobó que los atributos del nuevo mensaje entrante (`HttpRequestAttributes`) ahora contienen con éxito el query parameter `fullName=Max Mule` inyectado por el Request del flujo padre.
 * Detenido el proyecto y regresado a la perspectiva "Mule Design" para limpiar el entorno de pruebas.
+
+**Walkthrough 1-5:** practicado el uso de expresiones y operadores de DataWeave 2.0 en componentes de flujo para leer, modificar y formatear dinámicamente los datos del evento Mule.
+* Cambiado el "Value" del Set Payload del flujo `goodbyeFlow` de modo literal a modo expresión (`#[...]`) utilizando la cadena `#['Goodbye']`.
+* Implementada la función core `upper()` de DataWeave empleando el menú de autocompletado (`Ctrl+Spacebar`) para transformar el payload de salida a mayúsculas sostenidas: `#[upper('Goodbye')]`.
+* Modificado el Logger de `helloFlow` cambiando su visualización por defecto al modo expresión mapeando `#[payload]`, verificando en la consola de Anypoint Studio que ahora imprime únicamente el string del payload en lugar del objeto completo del evento.
+* Practicado el uso del operador de concatenación (`++`) en el Logger de `helloFlow` para combinar texto literal y código dinámico: `#['\nMessage: ' ++ payload]`, usando el carácter especial `\n` para forzar un salto de línea en los logs de la consola.
+* Modificado el Logger de `goodbyeFlow` (`fullName`) para extraer metadatos de los atributos entrantes mediante la expresión `#[attributes.queryParams]`. Posteriormente, se acotó la expresión para registrar el valor de un parámetro específico: `#[attributes.queryParams.fullName]`.
+* Refactorizado el Set Payload de `goodbyeFlow` para concatenar el saludo en mayúsculas con el query parameter recibido: `#[upper('Goodbye') ++ " " ++ attributes.queryParams.fullName]`.
+* Identificado y corregido un error de tipado en tiempo de diseño en la pestaña "Problems" provocado por valores nulos (Null values). Solucionado mediante el uso del operador de coacción `as String` y, posteriormente, optimizado de forma definitiva utilizando el operador `default` para establecer un valor de contingencia: `#[upper('Goodbye') ++ " " ++ (attributes.queryParams.fullName default 'Maxine')]`.
+* Configurada la cabecera "name" en la pestaña Responses del HTTP Listener de `helloFlow` para que devuelva dinámicamente el valor de un query parameter de la solicitud original empleando la expresión `#[attributes.queryParams.fname]`.
+* Validado todo el comportamiento en tránsito con el Mule Debugger en perspectiva de diseño, analizando la inyección y lectura de parámetros entre Postman/Advanced REST Client y los flujos locales.
   
 </details>
 

@@ -18,10 +18,11 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 				<http:headers ><![CDATA[#[output application/java
 ---
 {
-	"name" : attributes.queryParams.fname
+	"name" : vars.firstName
 }]]]></http:headers>
 			</http:response>
 		</http:listener>
+		<set-variable value="#[message.attributes.queryParams.fname]" doc:name="firstName" doc:id="adf44a37-65b8-41e8-9b16-59eac0bd6fff" variableName="firstName"/>
 		<set-payload value="Hello" doc:name="Hello" doc:id="c13a2038-e222-4fb7-a3d8-ba463c10ade5" />
 		<http:request doc:name="GET/goodbye" doc:id="ff3c8730-494d-41d9-8da5-76fdadd73fc3" config-ref="HTTP_Request_config" path="/goodbye" responseTimeout="300000">
 			<http:query-params ><![CDATA[#[output application/java

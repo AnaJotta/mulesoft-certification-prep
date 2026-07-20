@@ -14,8 +14,8 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 
 | Módulo | Estado |
 |---|---|
-| [1 — Acceso y modificación de eventos Mule](#módulo-1--acceso-y-modificación-de-eventos-mule) | 🔄 En progreso |
-| [2 — Estructuración de aplicaciones Mule](#módulo-2--estructuración-de-aplicaciones-mule) | ⏳ Pendiente |
+| [1 — Acceso y modificación de eventos Mule](#módulo-1--acceso-y-modificación-de-eventos-mule) | ✅ Completado |
+| [2 — Estructuración de aplicaciones Mule](#módulo-2--estructuración-de-aplicaciones-mule) | 🔄 En progreso |
 | [3 — Consumo de web services](#módulo-3--consumo-de-web-services) | ⏳ Pendiente |
 | [4 — Control de flujo de eventos](#módulo-4--control-de-flujo-de-eventos) | ⏳ Pendiente |
 | [5 — Manejo de errores](#módulo-5--manejo-de-errores) | ⏳ Pendiente |
@@ -32,7 +32,7 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 - [x] **1-3** Rastrear datos del evento al entrar y salir de una aplicación Mule
 - [x] **1-4** Configurar datos de request y response
 - [x] **1-5** Obtener y modificar datos del evento con expresiones DataWeave
-- [ ] **1-6** Definir y usar variables
+- [x] **1-6** Definir y usar variables
 
 <details>
 <summary>Notas de aprendizaje</summary>
@@ -69,6 +69,18 @@ Proyecto del curso oficial **Anypoint Platform Development: Fundamentals (DEX401
 * Identificado y corregido un error de tipado en tiempo de diseño en la pestaña "Problems" provocado por valores nulos (Null values). Solucionado mediante el uso del operador de coacción `as String` y, posteriormente, optimizado de forma definitiva utilizando el operador `default` para establecer un valor de contingencia: `#[upper('Goodbye') ++ " " ++ (attributes.queryParams.fullName default 'Maxine')]`.
 * Configurada la cabecera "name" en la pestaña Responses del HTTP Listener de `helloFlow` para que devuelva dinámicamente el valor de un query parameter de la solicitud original empleando la expresión `#[attributes.queryParams.fname]`.
 * Validado todo el comportamiento en tránsito con el Mule Debugger en perspectiva de diseño, analizando la inyección y lectura de parámetros entre Postman/Advanced REST Client y los flujos locales.
+
+**Walkthrough 1-6:** practicado el uso de variables de flujo (Flow Variables) asociadas a un Mule Event utilizando el componente Set Variable para almacenar y recuperar datos dinámicamente.
+* Añadido el componente "Set Variable" a la sección de Favoritos de la Mule Palette haciendo clic derecho sobre él en la sección Core.
+* Posicionado el componente Set Variable en `helloFlow` inmediatamente después del HTTP Listener de entrada.
+* Configurado el Set Variable asignándole tanto en el "Display Name" como en el "Name" el identificador `firstName`. Establecido su valor en modo expresión para capturar el query parameter entrante: `#[message.attributes.queryParams.fname]`.
+* Modificado el HTTP Listener de `helloFlow` en su pestaña "Responses" para cambiar el valor de la cabecera de respuesta `"name"`, sustituyendo la expresión de atributos previa por una referencia directa a la variable de flujo recién creada: `#[vars.firstName]`.
+* Validado el ciclo de vida y la persistencia de las variables utilizando el Mule Debugger:
+  * Al inicializarse la variable tras el Listener, se comprobó la creación de una nueva sección en el debugger llamada `vars` (un Map que almacena pares clave-valor), visualizando con éxito `firstName = "max"` (o el valor enviado en la petición).
+  * Al hacer "Step into" para cruzar la barrera de transporte físico e ingresar a `goodbyeFlow` (vía HTTP Request), se observó que la sección `vars` pasa a estar vacía (`size = 0`). Esto demostró empíricamente que las variables de flujo NO sobreviven ni se propagan de forma automática a través de límites de transporte externos (HTTP, colas, etc.).
+  * Al retornar la ejecución de la respuesta HTTP hacia el flujo principal `helloFlow`, se verificó que la sección `vars` recupera de inmediato su estado en la memoria del hilo original, volviendo a exponer `firstName = "max"`.
+* Verificado el resultado final en Advanced REST Client/Postman, confirmando que tanto el cuerpo de la respuesta ("GOODBYE max") como la cabecera HTTP devuelta ("name: max") reflejan los datos dinámicos procesados.
+* Cambiada la perspectiva a "Mule Design" y detenido el proyecto para dar por finalizado el Módulo 1.
   
 </details>
 
